@@ -2,6 +2,11 @@ from .exceptions import STCParseError
 from enum import Enum
 from typing import Any, Literal, TextIO
 
+try:
+    from stc_rust import loads as rust_loads
+except ImportError:
+    rust_loads = None
+
 class EmptyObject(Enum):
     EMPTY_LIST = []
     EMPTY_DICT = {}
@@ -146,7 +151,7 @@ def finalize_dict(d: dict, prefix: str) -> dict:
     return d
 
 
-def loads(stc_str: str, impl: Literal['rust', 'python'] = 'python') -> dict:
+def loads(stc_str: str, impl: Literal['rust', 'python'] = 'rust') -> dict:
     """
     Parses a string of STC and returns it as a dictionary.
     
@@ -160,7 +165,10 @@ def loads(stc_str: str, impl: Literal['rust', 'python'] = 'python') -> dict:
         STCParseError: If the input string is not valid.
     """
     if impl == 'rust':
-        raise NotImplementedError("Rust implementation is not available.")
+        if rust_loads is not None:
+            return rust_loads(stc_str)
+        else:
+            raise NotImplementedError("Rust implementation is not available.")
     if stc_str.strip() == "{}":
         return {}
     lines = stc_str.split("\n")
