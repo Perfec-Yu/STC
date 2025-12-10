@@ -8,7 +8,7 @@ def _import_loads():
     Set env DSL_IMPORT to something like: "mypkg.loader:loads"
     Otherwise we default to from yourpkg import loads
     """
-    from stc.loading import loads
+    from stc import loads
     return loads
 
 

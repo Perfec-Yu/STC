@@ -1,11 +1,17 @@
+import logging
+
 from .exceptions import STCParseError
 from enum import Enum
 from typing import Any, Literal, TextIO
 
 try:
-    from stc_rust import loads as rust_loads
+    from stc.stc_rust import loads as rust_loads
 except ImportError:
     rust_loads = None
+
+
+logger = logging.getLogger(__name__)
+
 
 class EmptyObject(Enum):
     EMPTY_LIST = []
@@ -168,7 +174,7 @@ def loads(stc_str: str, impl: Literal['rust', 'python'] = 'rust') -> dict:
         if rust_loads is not None:
             return rust_loads(stc_str)
         else:
-            raise NotImplementedError("Rust implementation is not available.")
+            logger.warning("Rust implementation not available (`stc_rust` not installed), falling back to Python implementation.")
     if stc_str.strip() == "{}":
         return {}
     lines = stc_str.split("\n")

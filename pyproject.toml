@@ -1,23 +1,24 @@
+[build-system]
+requires = ["maturin>=1.5,<2.0"]
+build-backend = "maturin"
+
 [project]
 name = "stc"
 version = "0.1.0"
-description = ""
-authors = [
-    {name = "Pengfei Yu",email = "life4pf@gmail.com"}
+description = "Simple Tool Calling Contract"
+requires-python = ">=3.9"
+authors = [{ name = "Perfec-Yu" }]
+classifiers = [
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Rust",
+  "Operating System :: OS Independent",
 ]
-readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-]
+license = { text = "MIT" }
 
-[tool.poetry]
-packages = [{include = "stc", from = "src"}]
-
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.4.1"
-pytest-cov = "^6.2.1"
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.maturin]
+# If you want the wheel to be importable as `import stc_rust`, leave it.
+# If you wanted a different *Python* import name, you could set:
+# module-name = "some_other_name"
+python-source = "python"
+module-name = "stc.stc_rust"
